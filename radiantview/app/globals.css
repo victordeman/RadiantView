@@ -39,17 +39,17 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --color-teal-accent: #00d4ff;
+  --color-teal-accent: #2dd4bf; /* teal-400 */
 }
 
 :root {
   --background: #020617; /* slate-950 */
   --foreground: #f8fafc;
-  --card: #020617;
+  --card: #0f172a; /* slate-900 */
   --card-foreground: #f8fafc;
-  --popover: #020617;
+  --popover: #0f172a;
   --popover-foreground: #f8fafc;
-  --primary: #00d4ff; /* teal accent */
+  --primary: #2dd4bf; /* teal-400 */
   --primary-foreground: #020617;
   --secondary: #1e293b;
   --secondary-foreground: #f8fafc;
@@ -60,19 +60,18 @@
   --destructive: #ef4444;
   --border: #1e293b;
   --input: #1e293b;
-  --ring: #00d4ff;
-  --radius: 0.5rem;
+  --ring: #2dd4bf;
+  --radius: 0.75rem;
   --sidebar: #020617;
   --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #00d4ff;
+  --sidebar-primary: #2dd4bf;
   --sidebar-primary-foreground: #020617;
-  --sidebar-accent: #1e293b;
+  --sidebar-accent: #0f172a;
   --sidebar-accent-foreground: #f8fafc;
   --sidebar-border: #1e293b;
-  --sidebar-ring: #00d4ff;
+  --sidebar-ring: #2dd4bf;
 }
 
-/* We force dark mode behavior since the request asked for a global dark theme */
 html {
   color-scheme: dark;
 }

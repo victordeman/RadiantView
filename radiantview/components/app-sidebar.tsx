@@ -2,11 +2,15 @@
 
 import * as React from "react"
 import {
-  LayoutDashboard,
-  ClipboardList,
+  Home,
+  ListTodo,
   Users,
-  Settings,
-  Database,
+  Calendar,
+  FileText,
+  Monitor,
+  BarChart3,
+  ShieldCheck,
+  LayoutDashboard,
   LogOut,
   User
 } from "lucide-react"
@@ -24,14 +28,14 @@ import {
 
 const items = [
   {
-    title: "Dashboard",
+    title: "Home",
     url: "/",
-    icon: LayoutDashboard,
+    icon: Home,
   },
   {
-    title: "Orders",
-    url: "/orders",
-    icon: ClipboardList,
+    title: "Worklist",
+    url: "/worklist",
+    icon: ListTodo,
   },
   {
     title: "Patients",
@@ -39,14 +43,29 @@ const items = [
     icon: Users,
   },
   {
-    title: "Archive",
-    url: "/archive",
-    icon: Database,
+    title: "Schedule",
+    url: "/schedule",
+    icon: Calendar,
   },
   {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
+    title: "Reports",
+    url: "/reports",
+    icon: FileText,
+  },
+  {
+    title: "Viewer",
+    url: "/viewer",
+    icon: Monitor,
+  },
+  {
+    title: "Analytics",
+    url: "/analytics",
+    icon: BarChart3,
+  },
+  {
+    title: "Admin",
+    url: "/admin",
+    icon: ShieldCheck,
   },
 ]
 
@@ -54,40 +73,40 @@ export function AppSidebar() {
   const { state } = useSidebar()
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-border p-4">
+    <Sidebar collapsible="icon" className="hidden md:flex">
+      <SidebarHeader className="border-b border-border/50 p-4">
         <div className="flex items-center gap-2 overflow-hidden">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_15px_rgba(45,212,191,0.3)]">
             <LayoutDashboard className="size-4" />
           </div>
           {state === "expanded" && (
-            <span className="font-bold text-xl tracking-tight text-primary">RadiantView</span>
+            <span className="font-bold text-xl tracking-tight text-foreground">RadiantView</span>
           )}
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu className="p-2">
+        <SidebarMenu className="p-2 gap-1">
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton tooltip={item.title} render={<a href={item.url} />}>
-                  <item.icon />
+                  <item.icon className="size-4" />
                   <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="border-t border-border p-2">
+      <SidebarFooter className="border-t border-border/50 p-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="User Profile">
-              <User />
+              <User className="size-4" />
               <span>Profile</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Logout">
-              <LogOut />
+              <LogOut className="size-4" />
               <span>Logout</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
