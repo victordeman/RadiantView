@@ -10,29 +10,13 @@ import {
   Share2,
   CheckCircle2
 } from "lucide-react";
+import { LandingHeader } from "@/components/landing-header";
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-950">
       {/* Navigation */}
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b border-slate-800/50">
-        <Link className="flex items-center justify-center" href="#">
-          <span className="font-bold text-2xl tracking-tight text-primary">RadiantView</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-          <Link className="text-sm font-medium hover:text-primary transition-colors hidden md:block" href="#features">
-            Features
-          </Link>
-          <Link className="text-sm font-medium hover:text-primary transition-colors hidden md:block" href="#testimonials">
-            Testimonials
-          </Link>
-          <Link href="/dashboard">
-            <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary/10">
-              Sign In
-            </Button>
-          </Link>
-        </nav>
-      </header>
+      <LandingHeader />
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -48,9 +32,11 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="h-12 px-8 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">
-                  Request Demo
-                </Button>
+                <Link href="/request-demo">
+                  <Button size="lg" className="h-12 px-8 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">
+                    Request Demo
+                  </Button>
+                </Link>
                 <Button size="lg" variant="outline" className="h-12 px-8 border-slate-700 hover:bg-slate-800 rounded-full font-semibold gap-2">
                   <PlayCircle className="size-5" />
                   Watch 2-min Video
