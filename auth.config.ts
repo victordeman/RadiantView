@@ -2,6 +2,10 @@ import type { NextAuthConfig } from "next-auth"
 
 export default {
   providers: [], // This will be expanded in auth.ts
+  pages: {
+    signIn: "/login",
+    newUser: "/register",
+  },
   session: { strategy: "jwt" },
   callbacks: {
     // Only includes callbacks that don't depend on Prisma
