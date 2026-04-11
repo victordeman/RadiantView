@@ -27,9 +27,8 @@ export default function LandingPage() {
               <div className="flex flex-col space-y-6 text-left">
                 <div className="space-y-4">
                   <p className="text-white text-xs font-bold tracking-[0.3em] uppercase opacity-80">Our Mission</p>
-                  <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl text-white leading-[1.1]">
-                    Cloud-Native <br />
-                    Enterprise <br />
+                  <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl text-white leading-[1.1]">
+                    Cloud-Native Enterprise <br />
                     Imaging Platform
                   </h1>
                   <p className="max-w-[600px] text-white/80 md:text-xl lg:text-2xl font-light">
