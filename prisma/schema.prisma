@@ -23,6 +23,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   role          UserRole  @default(CLINICIAN)
   accounts      Account[]
   sessions      Session[]

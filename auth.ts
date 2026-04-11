@@ -3,6 +3,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { db } from "@/lib/db"
 import { UserRole } from "@prisma/client"
 import authConfig from "./auth.config"
+import Google from "next-auth/providers/google"
+import bcrypt from "bcryptjs"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -35,9 +37,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   providers: [
-    ...authConfig.providers,
-    // This is a placeholder Credentials provider for demonstration.
-    // In a real app, you would verify credentials against your database.
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     {
       id: "credentials",
       name: "Credentials",
@@ -53,10 +56,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email: credentials.email as string }
         });
 
-        if (!user) return null;
+        if (!user || !user.password) return null;
 
-        // In production, use bcrypt.compare(credentials.password, user.password)
-        return user;
+        const passwordMatch = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
+
+        if (passwordMatch) return user;
+
+        return null;
       }
     }
   ],
