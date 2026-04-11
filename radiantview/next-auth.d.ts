@@ -1,12 +1,7 @@
-import { UserRole } from "@prisma/client";
-import NextAuth, { type DefaultSession } from "next-auth";
+import type { NextConfig } from "next";
 
-export type ExtendedUser = DefaultSession["user"] & {
-  role: UserRole;
+const nextConfig: NextConfig = {
+  /* config options here */
 };
 
-declare module "next-auth" {
-  interface Session {
-    user: ExtendedUser;
-  }
-}
+export default nextConfig;
