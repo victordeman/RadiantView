@@ -38,7 +38,7 @@ export function Topbar() {
           <Bell className="h-5 w-5" />
           <span className="sr-only">Notifications</span>
         </Button>
-
+        
         <DropdownMenu>
           <DropdownMenuTrigger render={<Button variant="ghost" className="relative h-8 w-8 rounded-full" />}>
               <Avatar className="h-8 w-8">

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  PlayCircle,
-  ArrowRight,
-  Database,
-  Monitor,
-  Smartphone,
-  Cpu,
+import { 
+  PlayCircle, 
+  ArrowRight, 
+  Database, 
+  Monitor, 
+  Smartphone, 
+  Cpu, 
   Share2,
   CheckCircle2
 } from "lucide-react";
