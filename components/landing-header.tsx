@@ -14,7 +14,7 @@ export function LandingHeader() {
         <Link className="text-sm font-medium hover:text-primary transition-colors hidden md:block" href="/#testimonials">
           Testimonials
         </Link>
-        <Link href="/dashboard">
+        <Link href="/login">
           <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary/10">
             Sign In
           </Button>
