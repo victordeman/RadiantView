@@ -32,5 +32,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     }
   },
-  providers: [], // Add providers here (e.g., Google, GitHub, Credentials)
+  providers: [
+    // This is a placeholder Credentials provider for demonstration.
+    // In a real app, you would verify credentials against your database.
+    {
+      id: "credentials",
+      name: "Credentials",
+      type: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+        
+        const user = await db.user.findUnique({
+          where: { email: credentials.email as string }
+        });
+
+        if (!user) return null;
+
+        // In production, use bcrypt.compare(credentials.password, user.password)
+        return user;
+      }
+    }
+  ],
 })
