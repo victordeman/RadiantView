@@ -66,3 +66,88 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+enum AppointmentStatus {
+  SCHEDULED
+  ARRIVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum OrderStatus {
+  PENDING
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum StudyStatus {
+  UNREPORTED
+  DRAFT
+  FINALIZED
+  ARCHIVED
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  patientId    String        @unique // Hospital/MRN
+  firstName    String
+  lastName     String
+  dob          DateTime
+  gender       String
+  email        String?
+  phone        String?
+  address      String?
+  appointments Appointment[]
+  orders       Order[]
+  studies      Study[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id        String            @id @default(cuid())
+  patientId String
+  patient   Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  start     DateTime
+  end       DateTime
+  status    AppointmentStatus @default(SCHEDULED)
+  reason    String?
+  notes     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  patientId       String
+  patient         Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  accessionNumber String?     @unique
+  modality        String
+  description     String?
+  status          OrderStatus @default(PENDING)
+  priority        String      @default("ROUTINE") // ROUTINE, STAT, URGENT
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Study {
+  id               String      @id @default(cuid())
+  studyInstanceUid String      @unique
+  patientId        String
+  patient          Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  accessionNumber  String?
+  modality         String
+  description      String?
+  studyDate        DateTime
+  orthancId        String?     @unique
+  status           StudyStatus @default(UNREPORTED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
