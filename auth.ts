@@ -2,11 +2,13 @@ import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { db } from "@/lib/db"
 import { UserRole } from "@prisma/client"
+import authConfig from "./auth.config"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
   callbacks: {
+    ...authConfig.callbacks,
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -33,6 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   providers: [
+    ...authConfig.providers,
     // This is a placeholder Credentials provider for demonstration.
     // In a real app, you would verify credentials against your database.
     {
