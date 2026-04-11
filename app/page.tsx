@@ -48,9 +48,9 @@ export default function LandingPage() {
               <div className="flex justify-center lg:justify-end">
                 <div className="w-full max-w-[480px] bg-white rounded-[2.5rem] shadow-2xl p-10 md:p-14 text-slate-900 flex flex-col items-center space-y-8">
                   <div className="flex flex-col items-center space-y-2">
-                    <span className="font-bold text-3xl tracking-tight text-bright-blue uppercase italic">RadiantView</span>
-                    <h2 className="text-2xl font-bold tracking-tight mt-4">Welcome to RadiantView</h2>
-                    <p className="text-slate-500 font-medium">Bring success to your business</p>
+                    <span className="font-bold text-3xl tracking-tight text-bright-blue uppercase">Explore Images</span>
+                    <h2 className="text-2xl font-bold tracking-tight mt-4">Gain Insight</h2>
+                    <p className="text-slate-500 font-medium">Start Here</p>
                   </div>
 
                   <div className="w-full space-y-4">
