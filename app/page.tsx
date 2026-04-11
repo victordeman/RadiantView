@@ -170,9 +170,9 @@ export default function LandingPage() {
       <footer className="w-full py-16 bg-navy text-white/60">
         <div className="container px-6 md:px-12 mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 pb-12">
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <span className="font-bold text-2xl tracking-tight text-white uppercase italic">RadiantView</span>
-            </div>
+            </div>*/}
             <div className="flex flex-wrap justify-center gap-8 text-xs font-bold tracking-widest uppercase">
               <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
