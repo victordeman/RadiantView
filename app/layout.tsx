@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "RadiantView | Cloud-Native Enterprise Imaging Platform",
-  description: "RIS + PACS + AI in one zero-footprint web app. The next generation of medical imaging.",
+  title: "Todo List",
+  description: "A simple minimalist todo list application.",
 };
 
 export default function RootLayout({
@@ -19,11 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: 'dark' }}>
-      <body className={`${inter.variable} font-sans antialiased bg-slate-950 text-slate-50`}>
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
+    <html lang="en">
+      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground`}>
+        {children}
       </body>
     </html>
   );
