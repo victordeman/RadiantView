@@ -66,3 +66,57 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Patient {
+  id           String        @id @default(cuid())
+  patientId    String        @unique
+  name         String
+  dob          DateTime
+  gender       String
+  studies      Study[]
+  appointments Appointment[]
+  orders       Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Study {
+  id               String   @id @default(cuid())
+  studyInstanceUid String   @unique
+  accessionNumber  String?
+  modality         String?
+  studyDate        DateTime?
+  studyDescription String?
+  patientId        String
+  patient          Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  orders           Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id        String   @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime
+  status    String   @default("SCHEDULED")
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          String  @id @default(cuid())
+  orderNumber String  @unique
+  status      String  @default("PENDING")
+  patientId   String
+  patient     Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  studyId     String?
+  study       Study?  @relation(fields: [studyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
