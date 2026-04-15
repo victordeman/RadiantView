@@ -82,14 +82,15 @@ model Patient {
 }
 
 model Study {
-  id               String   @id @default(cuid())
-  studyInstanceUid String   @unique
+  id               String    @id @default(cuid())
+  studyInstanceUid String    @unique
   accessionNumber  String?
   modality         String?
   studyDate        DateTime?
   studyDescription String?
+  status           String    @default("AVAILABLE")
   patientId        String
-  patient          Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patient          Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
   orders           Order[]
 
   createdAt DateTime @default(now())
@@ -101,6 +102,8 @@ model Appointment {
   startTime DateTime
   endTime   DateTime
   status    String   @default("SCHEDULED")
+  modality  String?
+  notes     String?
   patientId String
   patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
@@ -109,13 +112,17 @@ model Appointment {
 }
 
 model Order {
-  id          String  @id @default(cuid())
-  orderNumber String  @unique
-  status      String  @default("PENDING")
-  patientId   String
-  patient     Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  studyId     String?
-  study       Study?  @relation(fields: [studyId], references: [id])
+  id           String  @id @default(cuid())
+  orderNumber  String  @unique @default(cuid())
+  status       String  @default("PENDING")
+  modality     String?
+  priority     String  @default("ROUTINE")
+  notes        String?
+  referringDoc String?
+  patientId    String
+  patient      Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  studyId      String?
+  study        Study?  @relation(fields: [studyId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

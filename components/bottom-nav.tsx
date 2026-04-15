@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { icon: Home, label: "Home", href: "/" },
-  { icon: ListTodo, label: "Worklist", href: "/worklist" },
+  { icon: Home, label: "Home", href: "/dashboard" },
+  { icon: ListTodo, label: "Worklist", href: "/dashboard" },
   { icon: Users, label: "Patients", href: "/patients" },
-  { icon: Calendar, label: "Schedule", href: "/schedule" },
+  { icon: Calendar, label: "Schedule", href: "/scheduling" },
   { icon: FileText, label: "Reports", href: "/reports" },
 ]
 
