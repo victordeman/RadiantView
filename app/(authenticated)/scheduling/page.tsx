@@ -36,16 +36,6 @@ interface PatientOption {
   name: string
 }
 
-const modalityColors: Record<string, string> = {
-  CT: "bg-blue-500",
-  MR: "bg-purple-500",
-  US: "bg-emerald-500",
-  CR: "bg-amber-500",
-  XR: "bg-orange-500",
-  NM: "bg-pink-500",
-  PT: "bg-red-500",
-}
-
 export default function SchedulingPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [loading, setLoading] = useState(true)
@@ -155,7 +145,6 @@ export default function SchedulingPage() {
   }
 
   const eventStyleGetter = (event: CalendarEvent) => {
-    const colorClass = modalityColors[event.modality || ""] || "bg-primary"
     const bgColor =
       event.modality === "CT"
         ? "#3b82f6"
@@ -178,7 +167,6 @@ export default function SchedulingPage() {
         padding: "2px 6px",
         fontSize: "12px",
       },
-      className: colorClass,
     }
   }
 
