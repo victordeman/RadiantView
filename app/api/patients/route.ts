@@ -1,9 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const search = req.nextUrl.searchParams.get("search");
     const patients = await db.patient.findMany({
+      where: search
+        ? {
+            OR: [
+              { name: { contains: search, mode: "insensitive" } },
+              { patientId: { contains: search, mode: "insensitive" } },
+            ],
+          }
+        : undefined,
+      include: {
+        studies: {
+          select: { id: true, studyDate: true, modality: true, studyInstanceUid: true, studyDescription: true },
+          orderBy: { studyDate: "desc" },
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
     return NextResponse.json(patients);

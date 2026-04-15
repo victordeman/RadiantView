@@ -30,12 +30,12 @@ import {
 const items = [
   {
     title: "Home",
-    url: "/",
+    url: "/dashboard",
     icon: Home,
   },
   {
     title: "Worklist",
-    url: "/worklist",
+    url: "/dashboard",
     icon: ListTodo,
   },
   {
@@ -45,7 +45,7 @@ const items = [
   },
   {
     title: "Schedule",
-    url: "/schedule",
+    url: "/scheduling",
     icon: Calendar,
   },
   {
@@ -57,6 +57,11 @@ const items = [
     title: "Viewer",
     url: "/viewer",
     icon: Monitor,
+  },
+  {
+    title: "Orders",
+    url: "/orders",
+    icon: ListTodo,
   },
   {
     title: "Analytics",
@@ -89,7 +94,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu className="p-2 gap-1">
           {items.map((item) => {
-            const isActive = pathname === item.url || (item.title === "Worklist" && pathname === "/dashboard")
+            const isActive = pathname === item.url || pathname.startsWith(item.url + "/")
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton 

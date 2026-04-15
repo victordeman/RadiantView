@@ -11,11 +11,12 @@ export default {
     // Only includes callbacks that don't depend on Prisma
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const protectedRoutes = ["/dashboard", "/patients", "/scheduling", "/orders", "/reports", "/viewer", "/analytics", "/admin"];
+      const isProtected = protectedRoutes.some((route) => nextUrl.pathname.startsWith(route));
 
-      if (isOnDashboard) {
+      if (isProtected) {
         if (isLoggedIn) return true;
-        return false; // Redirect to login
+        return false;
       }
       return true;
     },
