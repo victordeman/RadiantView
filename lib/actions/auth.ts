@@ -1,3 +1,5 @@
+"use server";
+
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { UserRole } from "@prisma/client";

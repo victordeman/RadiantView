@@ -83,7 +83,7 @@ export async function GET() {
   }
 }
 
-export async function POST(_req: Request) {
+export async function POST() {
   // Logic for creating/uploading a study (proxy to Orthanc /instances)
   // For now, returning a placeholder as the task mainly focused on CRUD and proxy
   return new NextResponse("Not implemented", { status: 501 });
