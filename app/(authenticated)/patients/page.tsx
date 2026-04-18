@@ -290,7 +290,7 @@ export default function PatientsPage() {
                               </p>
                             </div>
                           </div>
-                          <Link href={`/viewer/${study.studyInstanceUid}?patientName=${encodeURIComponent(selectedPatient.name)}&patientId=${selectedPatient.patientId}`}>
+                          <Link href={`/viewer/${study.studyInstanceUid}?patientName=${encodeURIComponent(selectedPatient.name)}&patientId=${encodeURIComponent(selectedPatient.patientId)}&modality=${encodeURIComponent(study.modality || "")}&date=${encodeURIComponent(study.studyDate || "")}&description=${encodeURIComponent(study.studyDescription || "")}`}>
                             <Button variant="ghost" size="sm" className="text-primary hover:text-primary hover:bg-primary/10">
                               View
                             </Button>
