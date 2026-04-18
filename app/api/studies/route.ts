@@ -27,6 +27,7 @@ export async function GET() {
         ModalitiesInStudy?: string;
         StudyDate?: string;
         StudyDescription?: string;
+        StudyInstanceUID?: string;
       };
       Instances?: string[];
       LastUpdate?: string;
@@ -41,6 +42,7 @@ export async function GET() {
       modality: study.MainDicomTags?.ModalitiesInStudy || "N/A",
       studyDate: study.MainDicomTags?.StudyDate || "",
       studyDescription: study.MainDicomTags?.StudyDescription || "",
+      studyInstanceUid: study.MainDicomTags?.StudyInstanceUID || study.ID,
       status: "Available",
       instanceCount: study.Instances?.length || 0,
       lastUpdate: study.LastUpdate,

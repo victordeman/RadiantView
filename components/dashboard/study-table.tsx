@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { MoreHorizontal, Eye } from "lucide-react"
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -28,6 +29,7 @@ interface Study {
   modality: string
   studyDate: string
   studyDescription: string
+  studyInstanceUid?: string
   status: string
   instanceCount: number
 }
@@ -155,10 +157,12 @@ export function StudyTable({ searchQuery, modalityFilter }: StudyTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-primary hover:text-primary hover:bg-primary/10">
-                      <Eye className="size-4" />
-                      <span>View Images</span>
-                    </Button>
+                    <Link href={`/viewer/${study.studyInstanceUid || study.id}?patientName=${encodeURIComponent(study.patientName)}&patientId=${encodeURIComponent(study.patientId)}&modality=${encodeURIComponent(study.modality)}&date=${encodeURIComponent(study.studyDate)}&description=${encodeURIComponent(study.studyDescription)}`}>
+                      <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-primary hover:text-primary hover:bg-primary/10">
+                        <Eye className="size-4" />
+                        <span>View Images</span>
+                      </Button>
+                    </Link>
                     <DropdownMenu>
                       <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" />}>
                           <MoreHorizontal className="size-4" />
