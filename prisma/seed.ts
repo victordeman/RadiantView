@@ -13,12 +13,18 @@ const firstNames = [
   "James", "Sarah", "Michael", "Emily", "Robert", "Jessica", "David", "Ashley",
   "William", "Amanda", "Richard", "Stephanie", "Joseph", "Jennifer", "Thomas",
   "Elizabeth", "Christopher", "Lauren", "Daniel", "Megan",
+  "Matthew", "Nicole", "Andrew", "Rachel", "Joshua", "Samantha", "Anthony", "Katherine",
+  "Mark", "Olivia", "Kevin", "Hannah", "Brian", "Victoria", "Steven", "Natalie",
+  "Timothy", "Abigail", "Jason", "Grace",
 ];
 
 const lastNames = [
   "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis",
   "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson",
   "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+  "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez",
+  "Lewis", "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott",
+  "Torres", "Nguyen", "Hill", "Flores",
 ];
 
 const studyDescriptions = [
@@ -37,12 +43,23 @@ const studyDescriptions = [
   "MRI Shoulder Left",
   "Ultrasound Thyroid",
   "CT Spine Cervical",
+  "MRI Cardiac with stress",
+  "CT Pulmonary Angiography",
+  "Ultrasound Pelvis Transvaginal",
+  "MRI Liver with contrast",
+  "CT Sinus without contrast",
+  "Chest X-Ray Portable",
+  "MRI C-Spine without contrast",
+  "CT Coronary Calcium Score",
+  "Ultrasound Carotid Duplex",
+  "MRI Hip Bilateral",
 ];
 
 const referringDoctors = [
   "Dr. Sarah Chen", "Dr. James Wilson", "Dr. Maria Rodriguez", "Dr. Robert Kim",
   "Dr. Emily Patel", "Dr. Michael Thompson", "Dr. Lisa Park", "Dr. David Anderson",
-  "Dr. Jennifer Lee", "Dr. Christopher Brown",
+  "Dr. Jennifer Lee", "Dr. Christopher Brown", "Dr. Angela Martinez", "Dr. Steven Clark",
+  "Dr. Patricia Nguyen", "Dr. John Mitchell", "Dr. Susan Taylor",
 ];
 
 function randomDate(start: Date, end: Date): Date {
@@ -63,9 +80,9 @@ async function main() {
   await prisma.patient.deleteMany();
   console.log("  Cleared existing data.");
 
-  // Create 20 patients
+  // Create 40 patients
   const patients = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     const firstName = firstNames[i];
     const lastName = lastNames[i];
     const patient = await prisma.patient.create({
@@ -80,9 +97,9 @@ async function main() {
   }
   console.log(`  Created ${patients.length} patients.`);
 
-  // Create 50 studies
+  // Create 100 studies
   const studies = [];
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 100; i++) {
     const patient = randomItem(patients);
     const modality = randomItem(modalities);
     const study = await prisma.study.create({
@@ -90,7 +107,7 @@ async function main() {
         studyInstanceUid: `1.2.840.113619.2.${Date.now()}.${i}.${Math.floor(Math.random() * 100000)}`,
         accessionNumber: `ACC-${String(2000 + i).padStart(6, "0")}`,
         modality,
-        studyDate: randomDate(new Date("2024-01-01"), new Date("2026-04-15")),
+        studyDate: randomDate(new Date("2024-01-01"), new Date("2026-04-18")),
         studyDescription: randomItem(studyDescriptions),
         status: randomItem(statuses),
         patientId: patient.id,
@@ -100,13 +117,13 @@ async function main() {
   }
   console.log(`  Created ${studies.length} studies.`);
 
-  // Create 30 appointments (spread across this week and next)
+  // Create 60 appointments (spread across this week and next)
   const appointments = [];
   const now = new Date();
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 60; i++) {
     const patient = randomItem(patients);
-    const dayOffset = Math.floor(Math.random() * 14) - 3; // -3 to +10 days
-    const hour = 8 + Math.floor(Math.random() * 9); // 8 AM to 5 PM
+    const dayOffset = Math.floor(Math.random() * 21) - 5; // -5 to +15 days
+    const hour = 7 + Math.floor(Math.random() * 11); // 7 AM to 6 PM
     const minute = randomItem([0, 15, 30, 45]);
     const start = new Date(now);
     start.setDate(start.getDate() + dayOffset);
@@ -121,7 +138,7 @@ async function main() {
         endTime: end,
         status: dayOffset < 0 ? randomItem(["COMPLETED", "NO_SHOW"]) : randomItem(appointmentStatuses),
         modality: randomItem(modalities),
-        notes: Math.random() > 0.5 ? `Follow-up ${randomItem(["scan", "imaging", "consultation", "review"])}` : null,
+        notes: Math.random() > 0.4 ? `Follow-up ${randomItem(["scan", "imaging", "consultation", "review", "assessment"])}` : null,
         patientId: patient.id,
       },
     });
@@ -129,9 +146,9 @@ async function main() {
   }
   console.log(`  Created ${appointments.length} appointments.`);
 
-  // Create 25 orders
+  // Create 50 orders
   const orders = [];
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 50; i++) {
     const patient = randomItem(patients);
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const order = await prisma.order.create({
@@ -140,17 +157,17 @@ async function main() {
         status: randomItem(orderStatuses),
         modality: randomItem(modalities),
         priority: randomItem(priorities),
-        notes: Math.random() > 0.4 ? `Clinical indication: ${randomItem(["chest pain", "headache", "follow-up", "screening", "trauma", "shortness of breath", "abdominal pain", "joint pain"])}` : null,
+        notes: Math.random() > 0.3 ? `Clinical indication: ${randomItem(["chest pain", "headache", "follow-up", "screening", "trauma", "shortness of breath", "abdominal pain", "joint pain", "back pain", "dizziness", "weight loss", "cough", "fever", "nausea", "post-surgical evaluation", "rule out fracture"])}` : null,
         referringDoc: randomItem(referringDoctors),
         patientId: patient.id,
-        studyId: Math.random() > 0.6 && studies.length > 0 ? randomItem(studies).id : null,
+        studyId: Math.random() > 0.5 && studies.length > 0 ? randomItem(studies).id : null,
       },
     });
     orders.push(order);
   }
   console.log(`  Created ${orders.length} orders.`);
 
-  console.log("\n✅ Seed complete!");
+  console.log("\nSeed complete!");
   console.log(`   ${patients.length} patients, ${studies.length} studies, ${appointments.length} appointments, ${orders.length} orders`);
 }
 

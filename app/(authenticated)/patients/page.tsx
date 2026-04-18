@@ -131,12 +131,12 @@ export default function PatientsPage() {
   return (
     <div className="space-y-8 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1" data-tour="patients-heading">
           <h1 className="text-3xl font-bold tracking-tight">Patients</h1>
           <p className="text-muted-foreground">Manage patient records</p>
         </div>
         <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
-          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" />}>
+          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" data-tour="add-patient-btn" />}>
             <Plus className="mr-2 size-4" />
             Add Patient
           </DialogTrigger>
@@ -182,7 +182,7 @@ export default function PatientsPage() {
       </div>
 
       {/* Search */}
-      <div className="relative max-w-md">
+      <div className="relative max-w-md" data-tour="patient-search">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
@@ -217,7 +217,7 @@ export default function PatientsPage() {
           <p className="text-sm">Try adjusting your search or add a new patient.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-tour="patient-grid">
           {patients.map((patient) => (
             <div
               key={patient.id}
