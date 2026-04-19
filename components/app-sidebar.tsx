@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { usePathname } from "next/navigation"
+import { logoutUser } from "@/lib/actions/auth"
 import {
   Home,
   ListTodo,
@@ -80,7 +81,7 @@ export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar collapsible="icon" className="hidden md:flex">
+    <Sidebar collapsible="icon" className="hidden md:flex" data-tour="sidebar">
       <SidebarHeader className="border-b border-border/50 p-4">
         <div className="flex items-center gap-2 overflow-hidden">
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_0_15px_rgba(45,212,191,0.3)]">
@@ -119,7 +120,10 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Logout">
+            <SidebarMenuButton
+              tooltip="Logout"
+              onClick={() => logoutUser()}
+            >
               <LogOut className="size-4" />
               <span>Logout</span>
             </SidebarMenuButton>

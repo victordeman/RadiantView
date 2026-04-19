@@ -2,6 +2,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Topbar } from "@/components/topbar";
 import { BottomNav } from "@/components/bottom-nav";
+import { GuidedTour } from "@/components/guided-tour";
 
 export default function AuthenticatedLayout({
   children,
@@ -19,6 +20,7 @@ export default function AuthenticatedLayout({
           </main>
         </div>
         <BottomNav />
+        <GuidedTour />
       </div>
     </SidebarProvider>
   );

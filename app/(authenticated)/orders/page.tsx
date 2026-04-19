@@ -180,12 +180,12 @@ export default function OrdersPage() {
   return (
     <div className="space-y-8 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1" data-tour="orders-heading">
           <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
           <p className="text-muted-foreground">Create and track imaging orders</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" />}>
+          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" data-tour="new-order-btn" />}>
             <Plus className="mr-2 size-4" />
             New Order
           </DialogTrigger>
@@ -283,7 +283,7 @@ export default function OrdersPage() {
 
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4 items-end md:items-center justify-between bg-card/50 p-4 rounded-xl border border-border/50">
-        <div className="flex flex-1 items-center gap-2 w-full md:max-w-md">
+        <div className="flex flex-1 items-center gap-2 w-full md:max-w-md" data-tour="order-search">
           <div className="relative w-full">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -299,7 +299,7 @@ export default function OrdersPage() {
           </Button>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 w-full md:w-auto">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 w-full md:w-auto" data-tour="order-status-tabs">
           {statusTabs.map((tab) => (
             <Button
               key={tab}
@@ -323,7 +323,7 @@ export default function OrdersPage() {
           <Skeleton className="h-20 w-full" />
         </div>
       ) : (
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="rounded-xl border border-border bg-card overflow-hidden" data-tour="orders-table">
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow>
