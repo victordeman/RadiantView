@@ -183,12 +183,12 @@ export default function SchedulingPage() {
   return (
     <div className="space-y-6 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1" data-tour="schedule-heading">
           <h1 className="text-3xl font-bold tracking-tight">Schedule</h1>
           <p className="text-muted-foreground">Manage appointments and imaging slots</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" />}>
+          <DialogTrigger render={<Button className="bg-primary text-primary-foreground hover:bg-primary/90" data-tour="new-appointment-btn" />}>
             <Plus className="mr-2 size-4" />
             New Appointment
           </DialogTrigger>
@@ -292,7 +292,7 @@ export default function SchedulingPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           {/* Calendar */}
-          <div className="rounded-xl border border-border bg-card p-4 overflow-hidden">
+          <div className="rounded-xl border border-border bg-card p-4 overflow-hidden" data-tour="schedule-calendar">
             <style>{`
               .rbc-calendar { background: transparent; color: #f8fafc; }
               .rbc-toolbar { margin-bottom: 16px; }
@@ -344,7 +344,7 @@ export default function SchedulingPage() {
           </div>
 
           {/* Today's Appointments */}
-          <div className="rounded-xl border border-border bg-card p-4">
+          <div className="rounded-xl border border-border bg-card p-4" data-tour="today-appointments">
             <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
               <Clock className="size-5 text-primary" />
               Today&apos;s Appointments
