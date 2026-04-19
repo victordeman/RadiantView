@@ -110,7 +110,7 @@ export default function AdminPage() {
               users: users.length,
               patients: 0,
               studies: data.totalStudies || 0,
-              reports: data.pendingReports || 0,
+              reports: data.pendingReports || 0, // pending only
             })
           }
         })
@@ -347,7 +347,7 @@ export default function AdminPage() {
                 <p className="font-medium">{dbCounts.studies}</p>
               </div>
               <div>
-                <p className="text-muted-foreground">Reports</p>
+                <p className="text-muted-foreground">Pending Reports</p>
                 <p className="font-medium">{dbCounts.reports}</p>
               </div>
             </div>
@@ -401,7 +401,7 @@ export default function AdminPage() {
       )}
 
       {/* Add User Dialog */}
-      <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+      <Dialog open={addDialogOpen} onOpenChange={(open) => { setAddDialogOpen(open); if (open) setFormError(null) }}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Add New User</DialogTitle>
@@ -469,7 +469,7 @@ export default function AdminPage() {
       </Dialog>
 
       {/* Delete User Dialog */}
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+      <Dialog open={deleteDialogOpen} onOpenChange={(open) => { setDeleteDialogOpen(open); if (open) setFormError(null) }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete User</DialogTitle>

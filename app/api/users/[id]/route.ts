@@ -72,6 +72,15 @@ export async function DELETE(
       );
     }
 
+    // Check if user has authored reports
+    const reportCount = await db.report.count({ where: { authorId: id } });
+    if (reportCount > 0) {
+      return NextResponse.json(
+        { error: `Cannot delete user with ${reportCount} existing report(s). Reassign or archive their reports first.` },
+        { status: 400 }
+      );
+    }
+
     await db.user.delete({ where: { id } });
 
     return NextResponse.json({ success: true });

@@ -53,6 +53,22 @@ export async function PUT(
     }
 
     const { id } = await params;
+
+    // Check if report is finalized before allowing modifications
+    const existingReport = await db.report.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+    if (!existingReport) {
+      return NextResponse.json({ error: "Report not found" }, { status: 404 });
+    }
+    if (existingReport.status === "FINAL") {
+      return NextResponse.json(
+        { error: "Cannot modify a finalized report" },
+        { status: 400 }
+      );
+    }
+
     const body = await req.json();
     const { findings, impression, recommendation, status, templateName } = body;
 
