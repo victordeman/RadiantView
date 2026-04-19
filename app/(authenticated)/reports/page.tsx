@@ -63,10 +63,8 @@ interface StudyOption {
   modality: string | null
   studyDate: string | null
   studyDescription: string | null
-  patient: {
-    name: string
-    patientId: string
-  }
+  patientName: string
+  patientId: string
 }
 
 const statusTabs = ["ALL", "DRAFT", "PRELIMINARY", "FINAL", "AMENDED"]
@@ -237,14 +235,14 @@ export default function ReportsPage() {
                             onClick={() => {
                               setSelectedStudyId(s.id)
                               setSelectedStudyLabel(
-                                `${s.patient.name} \u2014 ${s.modality || "N/A"} ${s.studyDescription || ""}`
+                                `${s.patientName} \u2014 ${s.modality || "N/A"} ${s.studyDescription || ""}`
                               )
                               setStudies([])
                               setStudySearch("")
                             }}
                             className="w-full px-3 py-2 text-left text-sm hover:bg-muted transition-colors"
                           >
-                            <div className="font-medium">{s.patient.name}</div>
+                            <div className="font-medium">{s.patientName}</div>
                             <div className="text-xs text-muted-foreground">
                               {s.modality || "N/A"} \u2014 {s.studyDescription || "No description"} \u2014{" "}
                               {s.studyDate ? new Date(s.studyDate).toLocaleDateString() : "N/A"}
