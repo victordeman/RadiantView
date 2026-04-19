@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const search = req.nextUrl.searchParams.get("search");
   const host = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   try {
@@ -55,6 +56,16 @@ export async function GET() {
     // Fallback: fetch studies from the local database
     try {
       const dbStudies = await db.study.findMany({
+        where: search
+          ? {
+              OR: [
+                { studyDescription: { contains: search, mode: "insensitive" } },
+                { modality: { contains: search, mode: "insensitive" } },
+                { patient: { name: { contains: search, mode: "insensitive" } } },
+                { patient: { patientId: { contains: search, mode: "insensitive" } } },
+              ],
+            }
+          : undefined,
         include: {
           patient: {
             select: { name: true, patientId: true },
