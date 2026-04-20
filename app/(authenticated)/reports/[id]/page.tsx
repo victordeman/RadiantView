@@ -137,8 +137,9 @@ export default function ReportEditorPage() {
         body: JSON.stringify({ content: newComment.trim() }),
       })
       if (res.ok) {
+        const comment = await res.json()
         setNewComment("")
-        fetchReport()
+        setReport((prev) => prev ? { ...prev, comments: [...prev.comments, comment] } : prev)
       }
     } catch (error) {
       console.error("Failed to add comment:", error)

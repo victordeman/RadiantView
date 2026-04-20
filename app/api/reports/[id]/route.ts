@@ -83,6 +83,13 @@ export async function PUT(
     if (recommendation !== undefined) updateData.recommendation = recommendation;
     if (templateName !== undefined) updateData.templateName = templateName;
     if (status !== undefined) {
+      const allowedStatuses = ["DRAFT", "PRELIMINARY", "FINAL", "AMENDED"];
+      if (!allowedStatuses.includes(status)) {
+        return NextResponse.json(
+          { error: "Invalid status value" },
+          { status: 400 }
+        );
+      }
       updateData.status = status;
       if (status === "FINAL") {
         updateData.signedAt = new Date();
