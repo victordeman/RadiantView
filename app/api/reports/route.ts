@@ -60,18 +60,34 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { studyId, templateName, findings, impression, recommendation } = body;
+    const { studyId, studyInstanceUid, templateName, findings, impression, recommendation } = body;
 
-    if (!studyId) {
+    if (!studyId && !studyInstanceUid) {
       return NextResponse.json(
-        { error: "Study ID is required" },
+        { error: "Study ID or Study Instance UID is required" },
         { status: 400 }
       );
     }
 
+    // Resolve the database study ID — handles both DB IDs and Orthanc IDs
+    let resolvedStudyId = studyId;
+    if (studyInstanceUid) {
+      const study = await db.study.findUnique({
+        where: { studyInstanceUid },
+      });
+      if (study) {
+        resolvedStudyId = study.id;
+      } else if (!studyId) {
+        return NextResponse.json(
+          { error: "Study not found in database. Please ensure the study is synced." },
+          { status: 404 }
+        );
+      }
+    }
+
     const report = await db.report.create({
       data: {
-        studyId,
+        studyId: resolvedStudyId,
         authorId: session.user.id,
         templateName,
         findings: findings || "",

@@ -180,8 +180,16 @@ export default function AdminPage() {
     }
   }
 
-  // Access control - show access denied for non-admin users
-  if (userRole && userRole !== "ADMIN") {
+  // Access control - show loading while session loads, deny non-admin users
+  if (!userRole) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Skeleton className="h-8 w-48" />
+      </div>
+    )
+  }
+
+  if (userRole !== "ADMIN") {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-muted-foreground">
         <ShieldCheck className="size-16 mb-4 opacity-30" />
@@ -229,7 +237,7 @@ export default function AdminPage() {
           <div className="flex justify-end">
             <Button
               className="bg-primary text-primary-foreground hover:bg-primary/90"
-              onClick={() => setAddDialogOpen(true)}
+              onClick={() => { setFormError(null); setAddDialogOpen(true) }}
             >
               <Plus className="mr-2 size-4" />
               Add User
@@ -281,6 +289,7 @@ export default function AdminPage() {
                             size="icon"
                             className="text-destructive hover:text-destructive hover:bg-destructive/10"
                             onClick={() => {
+                              setFormError(null)
                               setSelectedUser(user)
                               setDeleteDialogOpen(true)
                             }}
@@ -401,7 +410,7 @@ export default function AdminPage() {
       )}
 
       {/* Add User Dialog */}
-      <Dialog open={addDialogOpen} onOpenChange={(open) => { setAddDialogOpen(open); if (open) setFormError(null) }}>
+      <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Add New User</DialogTitle>
@@ -469,7 +478,7 @@ export default function AdminPage() {
       </Dialog>
 
       {/* Delete User Dialog */}
-      <Dialog open={deleteDialogOpen} onOpenChange={(open) => { setDeleteDialogOpen(open); if (open) setFormError(null) }}>
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete User</DialogTitle>

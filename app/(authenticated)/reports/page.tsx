@@ -79,6 +79,7 @@ export default function ReportsPage() {
   const [studies, setStudies] = useState<StudyOption[]>([])
   const [studySearch, setStudySearch] = useState("")
   const [selectedStudyId, setSelectedStudyId] = useState("")
+  const [selectedStudyUid, setSelectedStudyUid] = useState("")
   const [selectedStudyLabel, setSelectedStudyLabel] = useState("")
   const [selectedTemplate, setSelectedTemplate] = useState("")
   const [formError, setFormError] = useState<string | null>(null)
@@ -141,6 +142,7 @@ export default function ReportsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           studyId: selectedStudyId,
+          studyInstanceUid: selectedStudyUid || undefined,
           templateName: selectedTemplate || null,
           findings: template?.sections.find((s) => s.label === "Findings")?.placeholder || "",
           impression: template?.sections.find((s) => s.label === "Impression")?.placeholder || "",
@@ -151,6 +153,7 @@ export default function ReportsPage() {
         const report = await res.json()
         setDialogOpen(false)
         setSelectedStudyId("")
+        setSelectedStudyUid("")
         setSelectedStudyLabel("")
         setStudySearch("")
         setSelectedTemplate("")
@@ -212,6 +215,7 @@ export default function ReportsPage() {
                       size="sm"
                       onClick={() => {
                         setSelectedStudyId("")
+                        setSelectedStudyUid("")
                         setSelectedStudyLabel("")
                         setStudySearch("")
                       }}
@@ -234,6 +238,7 @@ export default function ReportsPage() {
                             key={s.id}
                             onClick={() => {
                               setSelectedStudyId(s.id)
+                              setSelectedStudyUid(s.studyInstanceUid)
                               setSelectedStudyLabel(
                                 `${s.patientName} \u2014 ${s.modality || "N/A"} ${s.studyDescription || ""}`
                               )
