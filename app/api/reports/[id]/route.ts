@@ -118,6 +118,22 @@ export async function DELETE(
     }
 
     const { id } = await params;
+
+    // Prevent deletion of finalized reports
+    const existingReport = await db.report.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+    if (!existingReport) {
+      return NextResponse.json({ error: "Report not found" }, { status: 404 });
+    }
+    if (existingReport.status === "FINAL") {
+      return NextResponse.json(
+        { error: "Cannot delete a finalized report" },
+        { status: 400 }
+      );
+    }
+
     await db.report.delete({ where: { id } });
 
     return NextResponse.json({ success: true });

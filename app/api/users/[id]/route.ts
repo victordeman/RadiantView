@@ -72,11 +72,15 @@ export async function DELETE(
       );
     }
 
-    // Check if user has authored reports
+    // Check if user has authored reports or comments
     const reportCount = await db.report.count({ where: { authorId: id } });
-    if (reportCount > 0) {
+    const commentCount = await db.reportComment.count({ where: { authorId: id } });
+    if (reportCount > 0 || commentCount > 0) {
+      const parts = [];
+      if (reportCount > 0) parts.push(`${reportCount} report(s)`);
+      if (commentCount > 0) parts.push(`${commentCount} comment(s)`);
       return NextResponse.json(
-        { error: `Cannot delete user with ${reportCount} existing report(s). Reassign or archive their reports first.` },
+        { error: `Cannot delete user with ${parts.join(" and ")}. Reassign or archive them first.` },
         { status: 400 }
       );
     }
