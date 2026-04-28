@@ -92,10 +92,12 @@ export async function DELETE(
     await db.$transaction(async (tx) => {
       const reportCount = await tx.report.count({ where: { authorId: id } });
       const commentCount = await tx.reportComment.count({ where: { authorId: id } });
-      if (reportCount > 0 || commentCount > 0) {
+      const auditLogCount = await tx.auditLog.count({ where: { userId: id } });
+      if (reportCount > 0 || commentCount > 0 || auditLogCount > 0) {
         const parts: string[] = [];
         if (reportCount > 0) parts.push(`${reportCount} report(s)`);
         if (commentCount > 0) parts.push(`${commentCount} comment(s)`);
+        if (auditLogCount > 0) parts.push(`${auditLogCount} audit log(s)`);
         throw new Error(`HAS_REFERENCES:${parts.join(" and ")}`);
       }
       await tx.user.delete({ where: { id } });
