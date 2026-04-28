@@ -11,22 +11,23 @@ interface SearchResult {
 }
 
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const { searchParams } = new URL(req.url);
-  const q = searchParams.get("q")?.trim();
+    const { searchParams } = new URL(req.url);
+    const q = searchParams.get("q")?.trim();
 
-  if (!q || q.length < 2) {
-    return NextResponse.json([]);
-  }
+    if (!q || q.length < 2) {
+      return NextResponse.json([]);
+    }
 
-  const results: SearchResult[] = [];
+    const results: SearchResult[] = [];
 
-  // Search patients
-  const patients = await db.patient.findMany({
+    // Search patients
+    const patients = await db.patient.findMany({
     where: {
       OR: [
         { name: { contains: q, mode: "insensitive" } },
@@ -113,5 +114,12 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  return NextResponse.json(results);
+    return NextResponse.json(results);
+  } catch (error) {
+    console.error("[SEARCH_GET]", error);
+    return NextResponse.json(
+      { error: "Search failed" },
+      { status: 500 }
+    );
+  }
 }
