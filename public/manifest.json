@@ -1,0 +1,24 @@
+{
+  "name": "RadiantView",
+  "short_name": "RadiantView",
+  "description": "Cloud-Native Enterprise Imaging Platform — RIS + PACS + AI",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#2dd4bf",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

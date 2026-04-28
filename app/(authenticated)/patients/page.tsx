@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Plus, Search, User as UserIcon } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -92,6 +93,7 @@ export default function PatientsPage() {
       if (res.ok) {
         setAddDialogOpen(false)
         setFormData({ patientId: "", name: "", dob: "", gender: "Male" })
+        toast.success("Patient created successfully")
         fetchPatients()
       } else {
         const text = await res.text()

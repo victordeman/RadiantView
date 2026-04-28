@@ -1,9 +1,8 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { Search, Bell, Plus } from "lucide-react"
+import { Search, Bell, Plus, Command } from "lucide-react"
 import { logoutUser } from "@/lib/actions/auth"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -32,14 +31,17 @@ export function Topbar() {
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
-        <div className="relative hidden md:block" data-tour="topbar-search">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search patients, orders..."
-            className="w-64 pl-9 bg-secondary border-none focus-visible:ring-primary"
-          />
-        </div>
+        <button
+          onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }))}
+          className="hidden md:flex items-center gap-2 h-9 w-64 px-3 rounded-md bg-secondary text-muted-foreground text-sm hover:bg-secondary/80 transition-colors"
+          data-tour="topbar-search"
+        >
+          <Search className="h-4 w-4" />
+          <span className="flex-1 text-left">Search...</span>
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            <Command className="h-3 w-3" />K
+          </kbd>
+        </button>
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
