@@ -1,66 +1,78 @@
 # Testing RadiantView
 
-## Local Development Setup
+## Prerequisites
 
-1. Install dependencies: `npm install`
-2. Set up environment variables in `.env`:
-   - `DATABASE_URL` — PostgreSQL connection string (use PgBouncer port 6543 for Supabase)
-   - `DIRECT_URL` — Direct PostgreSQL connection (port 5432 for Supabase)
-   - `AUTH_SECRET` / `NEXTAUTH_SECRET` — NextAuth secret
-   - `NEXT_PUBLIC_APP_URL` — App URL (e.g., `http://localhost:3000`)
-3. Push schema: `npx prisma db push`
-4. Seed data: `npm run seed` (destructive — deletes all existing data first)
-5. Start dev server: `npm run dev` (runs on port 3000 with Turbopack)
+### Dev Server
+```bash
+PORT=3001 npm run dev
+```
+The app runs on `localhost:3001` by default.
 
-## Test Accounts
+### Database
+RadiantView uses Supabase PostgreSQL. Connection strings:
+- `DATABASE_URL` — PgBouncer connection (port 6543)
+- `DIRECT_URL` — Direct connection (port 5432)
 
-Create test users via the `/register` page or directly in the database:
-- Email: `viewertest@test.com` / Password: `password123` / Role: `TECHNOLOGIST`
-- Initials displayed: "VT" (from name "Viewer Tester")
+To push schema changes: `npx prisma db push`
 
-## Devin Secrets Needed
-
+### Devin Secrets Needed
 - `DATABASE_URL` — Supabase PgBouncer connection string
 - `DIRECT_URL` — Supabase direct connection string
-- `AUTH_SECRET` — NextAuth secret for session signing
+- `AUTH_SECRET` / `NEXTAUTH_SECRET` — NextAuth session secret
 
-## Key Testing Areas
+### Test Accounts
+- `viewertest@test.com` / `password123` — ADMIN role (can access /admin, audit logs)
+- Other users may exist from seed data (`npm run seed`)
 
-### Authentication & Logout
-- Logout uses a **server action** (`logoutUser()` in `lib/actions/auth.ts`) that calls the server-side `signOut({ redirectTo: "/login" })` from `@/auth`
-- Do NOT use client-side `signOut()` from `next-auth/react` — it causes `MissingCSRF` errors with NextAuth v5
-- Test both logout paths: topbar avatar dropdown "Log out" and sidebar footer "Logout" button
-- After logout, verify session is destroyed by navigating to `/dashboard` — should redirect to `/login`
+## Testing Patterns
 
-### Avatar Dropdown
-- Uses `useSession()` from `next-auth/react` to get user info
-- Requires `SessionProvider` wrapper in root layout (`components/providers.tsx`)
-- `DropdownMenuLabel` MUST be wrapped in `DropdownMenuGroup` (Base UI requirement — `MenuPrimitive.GroupLabel` needs `MenuPrimitive.Group` parent)
-- This same pattern applies to ALL dropdown menus in the app (viewer toolbar, topbar)
+### Authentication
+- Login at `/login` with email/password
+- The app uses NextAuth.js with credentials provider
+- Browser autocomplete may interfere — click fields individually when typing credentials
+- After login, you're redirected to `/dashboard`
 
-### Guided Tour (driver.js)
-- Floating `?` button at bottom-right corner opens tour menu
-- 6 tours available: Full Platform, Worklist, Patients, Scheduling, Orders, Viewer
-- Cross-page navigation uses `router.push()` + `setTimeout(800ms)` — may fail on slow connections
-- Tour targets use `data-tour` attributes on UI elements
-- Dark-themed popovers with hardcoded hex colors (`#0f172a`, `#2dd4bf`)
+### Role-Based Access
+- ADMIN users can access `/admin` (Users, System, Audit Log tabs)
+- Non-admin users are redirected away from `/admin`
+- Role is stored in the `User` table and exposed via NextAuth session
 
-### Seed Data
-- `npm run seed` generates: 40 patients, 100 studies, 60 appointments, 50 orders
-- Script runs `deleteMany()` on all tables first — destructive by design
-- Verify data appears on: `/dashboard` (worklist), `/patients` (cards), `/scheduling` (calendar), `/orders` (table)
+### Toast Notifications
+- Uses Sonner library, dark theme, positioned bottom-right
+- Toasts appear on: patient creation, order creation, report save/sign, user create/delete/role update
+- Toasts auto-dismiss after a few seconds — capture screenshots quickly
+
+### Global Search
+- Triggered by `Ctrl+K` keyboard shortcut or clicking the search button in the topbar
+- Searches across patients, studies, reports, and orders
+- Requires at least 2 characters before searching
+- Results show type badges (PATIENT, STUDY, REPORT, ORDER)
+- Clicking a result navigates to the corresponding page
+
+### Audit Logging
+- Audit log entries are created for: user create/update/delete, report create/update/sign/delete
+- View in Admin > Audit Log tab
+- Each entry shows: timestamp, user, action (color-coded badge), resource, details
+- Creating and deleting a test user is the easiest way to verify audit logging works
+
+### API Endpoints
+- `/api/health` — Health check (DB + Orthanc status, latency, version)
+- `/api/search?q=term` — Global search (requires auth)
+- `/api/audit?limit=50&offset=0` — Audit logs (admin only)
+- `/manifest.json` — PWA manifest (static file)
+
+### Error Pages
+- Navigate to any non-existent route (e.g., `/nonexistent`) to see custom 404 page
+- 404 page shows large "404" text, "Page Not Found", and navigation buttons
+- Error boundary (`app/error.tsx`) catches runtime errors with "Try Again" button
+
+### PWA
+- Manifest at `/manifest.json` — check for valid JSON with name, icons, display mode
+- Service worker at `/sw.js` — network-first caching, skips `/api/` routes
+- PWA icons are programmatically generated teal rectangles (not a real logo)
 
 ## Common Issues
-
-- **Registration fails on Vercel**: Check that `DATABASE_URL` and `DIRECT_URL` are set in Vercel environment variables and that Prisma migrations have been run against the production database
-- **DropdownMenu crash**: If you see "MenuGroupRootContext is missing", wrap `DropdownMenuLabel` in `DropdownMenuGroup`
-- **CSRF errors on logout**: Use server action approach, not client-side `signOut()`
-- **Lint warnings**: The `next lint` command is deprecated in Next.js 16; use ESLint CLI directly
-
-## Tech Stack Notes
-
-- Next.js 15 (App Router) with Turbopack
-- Tailwind CSS v4 (uses `@theme` directive, not `tailwind.config.js`)
-- shadcn/ui with Base UI primitives (not Radix)
-- NextAuth v5 with JWT strategy and Prisma adapter
-- PostgreSQL via Supabase with PgBouncer
+- **Login autocomplete**: Browser may merge email/password fields. Click each field individually before typing.
+- **Toast timing**: Toasts auto-dismiss quickly. Take screenshots immediately after the action.
+- **Prisma schema changes**: After modifying `prisma/schema.prisma`, run `npx prisma db push` to sync with Supabase.
+- **Registration on Vercel**: Requires `DATABASE_URL` and `DIRECT_URL` set in Vercel env vars. Without them, registration returns a friendly error.
