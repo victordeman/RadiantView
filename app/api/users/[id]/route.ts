@@ -22,6 +22,14 @@ export async function PUT(
     const body = await req.json();
     const { role, name } = body;
 
+    // Prevent self-role-change (same pattern as self-deletion check in DELETE)
+    if (role && id === session.user.id) {
+      return NextResponse.json(
+        { error: "Cannot change your own role" },
+        { status: 400 }
+      );
+    }
+
     const allowedRoles = ["RADIOLOGIST", "CLINICIAN", "TECH", "ADMIN"];
     if (role && !allowedRoles.includes(role)) {
       return NextResponse.json(

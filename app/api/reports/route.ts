@@ -84,6 +84,14 @@ export async function POST(req: NextRequest) {
           { status: 404 }
         );
       }
+    } else if (studyId) {
+      const study = await db.study.findUnique({ where: { id: studyId } });
+      if (!study) {
+        return NextResponse.json(
+          { error: "Study not found in database." },
+          { status: 404 }
+        );
+      }
     }
 
     const report = await db.report.create({
