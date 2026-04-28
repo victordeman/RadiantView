@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import { logAudit } from "@/lib/audit";
 
 export async function PUT(
   req: NextRequest,
@@ -43,6 +44,13 @@ export async function PUT(
         role: true,
         createdAt: true,
       },
+    });
+
+    await logAudit({
+      userId: session.user.id,
+      action: "USER_UPDATED",
+      resource: `User ${id}`,
+      details: `Updated: ${[role && `role=${role}`, name && `name=${name}`].filter(Boolean).join(", ")}`,
     });
 
     return NextResponse.json(user);
@@ -91,6 +99,12 @@ export async function DELETE(
         throw new Error(`HAS_REFERENCES:${parts.join(" and ")}`);
       }
       await tx.user.delete({ where: { id } });
+    });
+
+    await logAudit({
+      userId: session.user.id,
+      action: "USER_DELETED",
+      resource: `User ${id}`,
     });
 
     return NextResponse.json({ success: true });

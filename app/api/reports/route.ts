@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import { logAudit } from "@/lib/audit";
 
 export async function GET(req: NextRequest) {
   try {
@@ -102,6 +103,13 @@ export async function POST(req: NextRequest) {
           select: { id: true, name: true, email: true },
         },
       },
+    });
+
+    await logAudit({
+      userId: session.user.id,
+      action: "REPORT_CREATED",
+      resource: `Report ${report.id}`,
+      details: `Template: ${templateName || "None"}, Study: ${report.study?.patient?.name || resolvedStudyId}`,
     });
 
     return NextResponse.json(report, { status: 201 });

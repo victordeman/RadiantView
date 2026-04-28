@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
 import bcrypt from "bcryptjs";
+import { logAudit } from "@/lib/audit";
 
 export async function GET() {
   try {
@@ -91,6 +92,13 @@ export async function POST(req: NextRequest) {
         role: true,
         createdAt: true,
       },
+    });
+
+    await logAudit({
+      userId: session.user.id,
+      action: "USER_CREATED",
+      resource: `User ${user.id}`,
+      details: `${name} (${email}) — Role: ${role}`,
     });
 
     return NextResponse.json(user, { status: 201 });

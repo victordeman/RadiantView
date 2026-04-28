@@ -4,6 +4,7 @@ import { Topbar } from "@/components/topbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { GuidedTour } from "@/components/guided-tour";
 import { ChatPanel } from "@/components/chat-panel";
+import { GlobalSearch } from "@/components/global-search";
 
 export default function AuthenticatedLayout({
   children,
@@ -23,6 +24,7 @@ export default function AuthenticatedLayout({
         <BottomNav />
         <GuidedTour />
         <ChatPanel />
+        <GlobalSearch />
       </div>
     </SidebarProvider>
   );

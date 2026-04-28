@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Plus, Search, FileText, Filter } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -157,6 +158,7 @@ export default function ReportsPage() {
         setSelectedStudyLabel("")
         setStudySearch("")
         setSelectedTemplate("")
+        toast.success("Report created successfully")
         router.push(`/reports/${report.id}`)
       } else {
         setFormError("Failed to create report.")

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 import {
   ShieldCheck,
   Users,
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
+import { AuditLogTab } from "@/components/audit-log-tab"
 import {
   Table,
   TableBody,
@@ -134,6 +136,7 @@ export default function AdminPage() {
       if (res.ok) {
         setAddDialogOpen(false)
         setFormData({ name: "", email: "", password: "", role: "CLINICIAN" })
+        toast.success("User created successfully")
         fetchUsers()
       } else {
         const data = await res.json()
@@ -148,14 +151,20 @@ export default function AdminPage() {
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     try {
-      await fetch(`/api/users/${userId}`, {
+      const res = await fetch(`/api/users/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role: newRole }),
       })
+      if (res.ok) {
+        toast.success("Role updated successfully")
+      } else {
+        toast.error("Failed to update role")
+      }
       fetchUsers()
     } catch (error) {
       console.error("Failed to update role:", error)
+      toast.error("Failed to update role")
     }
   }
 
@@ -168,6 +177,7 @@ export default function AdminPage() {
       if (res.ok) {
         setDeleteDialogOpen(false)
         setSelectedUser(null)
+        toast.success("User deleted successfully")
         fetchUsers()
       } else {
         const data = await res.json()
@@ -384,29 +394,7 @@ export default function AdminPage() {
 
       {/* Audit Log Tab */}
       {activeTab === "audit" && (
-        <div className="rounded-xl border border-border bg-card overflow-hidden">
-          <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow>
-                <TableHead>Timestamp</TableHead>
-                <TableHead>User</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Resource</TableHead>
-                <TableHead>Details</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                  <div className="flex flex-col items-center gap-2">
-                    <ClipboardList className="size-8 opacity-50" />
-                    <p>Audit logging will be implemented in Phase 5.</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
+        <AuditLogTab />
       )}
 
       {/* Add User Dialog */}

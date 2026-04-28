@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { Plus, Search, Filter, ShoppingCart } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -131,6 +132,7 @@ export default function OrdersPage() {
         setFormData({ modality: "CT", priority: "ROUTINE", referringDoc: "", notes: "" })
         setSelectedPatientId("")
         setPatientSearch("")
+        toast.success("Order created successfully")
         fetchOrders()
       } else {
         setFormError("Failed to create order.")

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Save, Send, CheckCircle, Eye, MessageSquare } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -118,10 +119,20 @@ export default function ReportEditorPage() {
       if (res.ok) {
         const updated = await res.json()
         setReport((prev) => prev ? { ...prev, ...updated, comments: prev.comments } : prev)
-        if (newStatus === "FINAL") setSignDialogOpen(false)
+        if (newStatus === "FINAL") {
+          setSignDialogOpen(false)
+          toast.success("Report signed successfully")
+        } else if (newStatus === "PRELIMINARY") {
+          toast.success("Report submitted as preliminary")
+        } else {
+          toast.success("Report saved")
+        }
+      } else {
+        toast.error("Failed to save report")
       }
     } catch (error) {
       console.error("Failed to save report:", error)
+      toast.error("Failed to save report")
     } finally {
       setSaving(false)
     }
@@ -140,9 +151,13 @@ export default function ReportEditorPage() {
         const comment = await res.json()
         setNewComment("")
         setReport((prev) => prev ? { ...prev, comments: [...prev.comments, comment] } : prev)
+        toast.success("Comment posted")
+      } else {
+        toast.error("Failed to post comment")
       }
     } catch (error) {
       console.error("Failed to add comment:", error)
+      toast.error("Failed to post comment")
     } finally {
       setSubmittingComment(false)
     }

@@ -30,6 +30,7 @@ model User {
   sessions      Session[]
   reports        Report[]
   reportComments ReportComment[]
+  auditLogs      AuditLog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -157,6 +158,17 @@ model ReportComment {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   content   String   @db.Text
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  resource  String
+  details   String?  @db.Text
 
   createdAt DateTime @default(now())
 }

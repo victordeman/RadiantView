@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import { logAudit } from "@/lib/audit";
 
 export async function GET(
   _req: NextRequest,
@@ -111,6 +112,14 @@ export async function PUT(
       });
     });
 
+    const auditAction = status === "FINAL" ? "REPORT_SIGNED" : "REPORT_UPDATED";
+    await logAudit({
+      userId: session.user.id,
+      action: auditAction,
+      resource: `Report ${id}`,
+      details: status ? `Status changed to ${status}` : "Content updated",
+    });
+
     return NextResponse.json(report);
   } catch (error) {
     if (error instanceof Error) {
@@ -154,6 +163,12 @@ export async function DELETE(
         throw new Error("FINALIZED");
       }
       await tx.report.delete({ where: { id } });
+    });
+
+    await logAudit({
+      userId: session.user.id,
+      action: "REPORT_DELETED",
+      resource: `Report ${id}`,
     });
 
     return NextResponse.json({ success: true });
