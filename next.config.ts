@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Turbopack resolveAlias: replace Node.js-only modules with empty stubs
+  // (Turbopack equivalent of webpack resolve.fallback)
+  turbopack: {
+    resolveAlias: {
+      fs: { browser: "./lib/empty-module.js" },
+      path: { browser: "./lib/empty-module.js" },
+    },
+  },
   async headers() {
     return [
       {
