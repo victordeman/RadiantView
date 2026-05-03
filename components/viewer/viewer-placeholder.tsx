@@ -1,7 +1,9 @@
 "use client"
 
-import { Monitor, ImageIcon } from "lucide-react"
+import Link from "next/link"
+import { Monitor, ImageIcon, Upload } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 interface ViewerPlaceholderProps {
   patientName?: string
@@ -67,12 +69,22 @@ export function ViewerPlaceholder({
           <div className="space-y-2">
             <h2 className="text-xl font-semibold text-foreground">DICOM Viewer</h2>
             <p className="text-muted-foreground text-sm">
-              Connect to an Orthanc server to view DICOM images
+              No PACS server connected. Drop DICOM files to view locally, or connect to Orthanc.
             </p>
             <p className="text-muted-foreground/60 text-xs">
-              Set <code className="text-primary/60 bg-primary/5 px-1 py-0.5 rounded">ORTHANC_URL</code> in your environment to enable the viewer
+              Set <code className="text-primary/60 bg-primary/5 px-1 py-0.5 rounded">ORTHANC_URL</code> in your environment to enable the full PACS viewer
             </p>
           </div>
+
+          <Button
+            className="gap-2"
+            render={
+              <Link href={`/dicom-viewer${studyInstanceUid ? `?study=${encodeURIComponent(studyInstanceUid)}` : ""}`} />
+            }
+          >
+            <Upload className="size-4" />
+            View in DICOM Viewer
+          </Button>
 
           {/* Study Metadata Cards */}
           {(patientName || studyInstanceUid) && (

@@ -13,6 +13,7 @@ type TourId =
   | "scheduling"
   | "orders"
   | "viewer"
+  | "dicom-viewer"
   | "full"
 
 interface TourConfig {
@@ -260,6 +261,49 @@ const tourConfigs: TourConfig[] = [
             "To view DICOM images, find a study in the worklist and click the 'View Images' button. This opens the full-screen DICOM viewer with the study pre-loaded.",
           side: "top",
           align: "center",
+        },
+      },
+    ],
+  },
+  {
+    id: "dicom-viewer",
+    label: "DICOM Viewer Tour",
+    description: "Upload and view DICOM files directly in your browser",
+    startPath: "/dicom-viewer",
+    steps: [
+      {
+        popover: {
+          title: "Client-Side DICOM Viewer",
+          description:
+            "This viewer lets you drag-and-drop DICOM (.dcm) files directly into the browser. No server required — all processing happens on your device.",
+        },
+      },
+      {
+        popover: {
+          title: "Loading Files",
+          description:
+            "Drag .dcm files onto the drop zone, or click 'Select Files' to browse. You can also select an entire folder for CT/MR series.",
+        },
+      },
+      {
+        popover: {
+          title: "Viewer Tools",
+          description:
+            "Use the toolbar to switch tools: Window/Level (W), Zoom (Z), Pan (P), Length (L), Angle (A), Elliptical ROI (E), Arrow Annotate (N). Keyboard shortcuts shown in parentheses.",
+        },
+      },
+      {
+        popover: {
+          title: "W/L Presets & Viewport Controls",
+          description:
+            "Apply preset Window/Level values (Bone, Lung, Brain, etc.) from the Presets dropdown. Use Invert (I), Rotate, Flip, and Reset (R) to adjust the view.",
+        },
+      },
+      {
+        popover: {
+          title: "Series Navigation",
+          description:
+            "For multi-file series (CT scans), use the mouse wheel or Up/Down arrow keys to scroll through slices. The status bar shows your position in the stack.",
         },
       },
     ],

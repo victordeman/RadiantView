@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Plus, Monitor, Search, Filter } from "lucide-react"
+import { Plus, Monitor, Search, Filter, FileImage } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { StudyTable } from "@/components/dashboard/study-table"
@@ -33,6 +33,13 @@ export default function DashboardPage() {
               <Monitor className="size-7" />
             </div>
             <span className="text-xs font-bold tracking-wider uppercase opacity-80 group-hover:opacity-100 transition-opacity">Viewer</span>
+          </Link>
+
+          <Link href="/dicom-viewer" className="flex flex-col items-center gap-2 group cursor-pointer" data-tour="quick-action-dicom">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-card border-2 border-primary/20 group-hover:border-primary group-hover:bg-primary/10 text-primary transition-all duration-300 shadow-[0_0_15px_rgba(45,212,191,0.1)] group-hover:shadow-[0_0_25px_rgba(45,212,191,0.2)]">
+              <FileImage className="size-7" />
+            </div>
+            <span className="text-xs font-bold tracking-wider uppercase opacity-80 group-hover:opacity-100 transition-opacity">Quick Upload</span>
           </Link>
         </div>
       </div>
