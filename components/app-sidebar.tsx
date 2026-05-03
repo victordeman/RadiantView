@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   LayoutDashboard,
   LogOut,
-  User
+  User,
+  FileImage
 } from "lucide-react"
 
 import {
@@ -58,6 +59,11 @@ const items = [
     title: "Viewer",
     url: "/viewer",
     icon: Monitor,
+  },
+  {
+    title: "DICOM Viewer",
+    url: "/dicom-viewer",
+    icon: FileImage,
   },
   {
     title: "Orders",
